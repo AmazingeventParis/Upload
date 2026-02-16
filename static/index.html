@@ -195,7 +195,7 @@
 <div id="main-app" class="main">
     <div class="header">
         <h1>Upload Tool</h1>
-        <p>Glissez-deposez vos fichiers, puis copiez la commande dans code-server</p>
+        <p>Glissez-deposez vos fichiers — ils apparaissent directement dans code-server</p>
     </div>
 
     <!-- Drop zone -->
@@ -331,15 +331,15 @@ async function uploadOne(file) {
         const el = document.getElementById(id);
         const statusEl = el.querySelector('.status');
         statusEl.className = 'status done';
-        statusEl.textContent = 'Upload reussi !';
+        statusEl.textContent = 'Disponible dans code-server !';
 
-        // Ajouter commande wget
-        const cmdHtml = `
+        // Afficher le chemin pour Claude
+        const pathHtml = `
             <div class="cmd-box">
-                <code>mkdir -p ~/projects/uploads && wget -q '${result.download_url}' -O ~/projects/uploads/${result.filename}</code>
+                <code>~/projects/uploads/${result.filename}</code>
                 <button class="copy-btn" onclick="copyCmd(this)">Copier</button>
             </div>`;
-        el.querySelector('.info').insertAdjacentHTML('beforeend', cmdHtml);
+        el.querySelector('.info').insertAdjacentHTML('beforeend', pathHtml);
 
     } catch (err) {
         const el = document.getElementById(id);

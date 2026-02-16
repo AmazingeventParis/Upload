@@ -12,7 +12,7 @@ from flask import Flask, request, jsonify, send_from_directory, Response
 
 app = Flask(__name__, static_folder="static")
 
-UPLOAD_DIR = os.environ.get("UPLOAD_DIR", "/app/uploads")
+UPLOAD_DIR = os.environ.get("UPLOAD_DIR", "/codeserver/projects/uploads")
 PASSWORD = os.environ.get("UPLOAD_PASSWORD", "Laurytal2")
 MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB
 
@@ -70,8 +70,7 @@ def upload_file():
         "original_name": f.filename,
         "size": size,
         "download_url": download_url,
-        "wget_command": f"wget -q '{download_url}' -O ~/projects/uploads/{filename}",
-        "curl_command": f"curl -sO ~/projects/uploads/{filename} '{download_url}'",
+        "codeserver_path": f"~/projects/uploads/{filename}",
     })
 
 
