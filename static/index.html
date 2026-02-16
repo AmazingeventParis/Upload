@@ -381,7 +381,6 @@ async function loadFiles() {
 }
 
 async function deleteFile(name, el) {
-    if (!confirm('Supprimer ' + name + ' ?')) return;
     await fetch('/api/delete/' + name, {
         method: 'DELETE',
         headers: { 'X-Upload-Password': password }

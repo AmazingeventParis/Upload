@@ -6,6 +6,8 @@ puis copier la commande wget pour les recuperer sur code-server.
 
 import os
 import uuid
+import time
+import threading
 import functools
 from datetime import datetime
 from flask import Flask, request, jsonify, send_from_directory, Response
@@ -108,6 +110,27 @@ def delete_file(filename):
         os.remove(fpath)
         return jsonify({"success": True})
     return jsonify({"error": "Fichier non trouve"}), 404
+
+
+AUTO_DELETE_SECONDS = 300  # 5 minutes
+
+
+def cleanup_old_files():
+    """Supprime les fichiers de plus de 5 minutes."""
+    while True:
+        time.sleep(60)
+        now = time.time()
+        try:
+            for fname in os.listdir(UPLOAD_DIR):
+                fpath = os.path.join(UPLOAD_DIR, fname)
+                if os.path.isfile(fpath) and now - os.path.getmtime(fpath) > AUTO_DELETE_SECONDS:
+                    os.remove(fpath)
+        except Exception:
+            pass
+
+
+cleanup_thread = threading.Thread(target=cleanup_old_files, daemon=True)
+cleanup_thread.start()
 
 
 if __name__ == "__main__":
