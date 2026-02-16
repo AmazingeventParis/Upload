@@ -201,7 +201,7 @@
     <!-- Drop zone -->
     <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
         <div class="drop-zone-icon">📁</div>
-        <div class="drop-zone-text"><strong>Glissez-deposez</strong> vos fichiers ici</div>
+        <div class="drop-zone-text"><strong>Ctrl+V</strong> pour coller une capture | <strong>Glissez-deposez</strong> vos fichiers</div>
         <div class="drop-zone-sub">ou cliquez pour parcourir — Max 50 MB par fichier</div>
     </div>
     <input type="file" id="file-input" multiple>
@@ -272,6 +272,22 @@ dropZone.addEventListener('drop', e => {
 fileInput.addEventListener('change', e => {
     uploadFiles(e.target.files);
     fileInput.value = '';
+});
+
+// --- Ctrl+V paste ---
+document.addEventListener('paste', e => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of items) {
+        if (item.type.startsWith('image/')) {
+            e.preventDefault();
+            const blob = item.getAsFile();
+            const ext = blob.type.split('/')[1] || 'png';
+            const file = new File([blob], `capture_${Date.now()}.${ext}`, { type: blob.type });
+            uploadFiles([file]);
+            return;
+        }
+    }
 });
 
 // --- Upload ---
