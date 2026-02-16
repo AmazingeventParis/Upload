@@ -333,10 +333,10 @@ async function uploadOne(file) {
         statusEl.className = 'status done';
         statusEl.textContent = 'Disponible dans code-server !';
 
-        // Afficher le chemin pour Claude
+        // Afficher le lien pour Claude Code
         const pathHtml = `
             <div class="cmd-box">
-                <code>~/projects/uploads/${result.filename}</code>
+                <code>telecharge et regarde ${result.download_url}</code>
                 <button class="copy-btn" onclick="copyCmd(this)">Copier</button>
             </div>`;
         el.querySelector('.info').insertAdjacentHTML('beforeend', pathHtml);
