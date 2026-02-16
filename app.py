@@ -16,7 +16,7 @@ app = Flask(__name__, static_folder="static")
 
 UPLOAD_DIR = os.environ.get("UPLOAD_DIR", "/codeserver/projects/uploads")
 PASSWORD = os.environ.get("UPLOAD_PASSWORD", "Laurytal2")
-MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB
+MAX_FILE_SIZE = 300 * 1024 * 1024  # 300 MB
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
@@ -51,7 +51,7 @@ def upload_file():
     size = f.tell()
     f.seek(0)
     if size > MAX_FILE_SIZE:
-        return jsonify({"error": f"Fichier trop gros ({size // 1024 // 1024}MB > 50MB)"}), 400
+        return jsonify({"error": f"Fichier trop gros ({size // 1024 // 1024}MB > 300MB)"}), 400
 
     # Nom unique pour eviter les collisions
     ext = os.path.splitext(f.filename)[1].lower()
